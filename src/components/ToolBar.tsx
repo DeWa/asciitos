@@ -91,7 +91,7 @@ const ToolBar: React.FC<ToolBarProps> = ({ toolbarProps, onSetToolbarProps }) =>
     }
   };
 
-  const { selectedChar, selectedTool, selectedCharColor } = toolbarProps;
+  const { selectedChar, selectedTool, selectedCharColor, selectedBgColor } = toolbarProps;
 
   const onSelect = (char: string) => {
     onSetToolbarProps({ ...toolbarProps, selectedChar: char });
@@ -103,6 +103,10 @@ const ToolBar: React.FC<ToolBarProps> = ({ toolbarProps, onSetToolbarProps }) =>
 
   const onCharColorChange = (color: Color) => {
     onSetToolbarProps({ ...toolbarProps, selectedCharColor: color });
+  };
+
+  const onBgColorChange = (color: Color) => {
+    onSetToolbarProps({ ...toolbarProps, selectedBgColor: color });
   };
 
   return (
@@ -153,6 +157,28 @@ const ToolBar: React.FC<ToolBarProps> = ({ toolbarProps, onSetToolbarProps }) =>
         >
           <ColorPicker.HiddenInput />
           <ColorPicker.Label>Character Color</ColorPicker.Label>
+          <ColorPicker.Control>
+            <ColorPicker.Trigger />
+          </ColorPicker.Control>
+          <Portal>
+            <ColorPicker.Positioner>
+              <ColorPicker.Content>
+                <ColorPicker.Area />
+                <HStack>
+                  <ColorPicker.EyeDropper size="xs" variant="outline" />
+                  <ColorPicker.Sliders />
+                </HStack>
+              </ColorPicker.Content>
+            </ColorPicker.Positioner>
+          </Portal>
+        </ColorPicker.Root>
+        <ColorPicker.Root
+          defaultValue={selectedBgColor}
+          size="md"
+          onValueChangeEnd={(value) => onBgColorChange(value.value)}
+        >
+          <ColorPicker.HiddenInput />
+          <ColorPicker.Label>Background Color</ColorPicker.Label>
           <ColorPicker.Control>
             <ColorPicker.Trigger />
           </ColorPicker.Control>
