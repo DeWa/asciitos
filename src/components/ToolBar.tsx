@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled from "@emotion/styled";
+import { ColorPicker, HStack, Portal, type Color } from "@chakra-ui/react";
+import { ToolType, type ToolbarProps } from "../types";
 
 const Container = styled.div`
   display: flex;
@@ -26,19 +28,25 @@ const Input = styled.input`
   }
 `;
 
+const CharacterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
 const PresetContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
 `;
 
-const PresetButton = styled.button<{ isSelected: boolean }>`
+const PresetButton = styled.button<{ $isSelected: boolean }>`
   width: 30px;
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => (props.isSelected ? "#4a4a4a" : "#333")};
+  background-color: ${(props) => (props.$isSelected ? "#4a4a4a" : "#333")};
   border: 1px solid #444;
   color: #fff;
   cursor: pointer;
@@ -51,15 +59,26 @@ const PresetButton = styled.button<{ isSelected: boolean }>`
   }
 `;
 
-interface CharacterSelectorProps {
-  onSelect: (char: string) => void;
-  selectedChar: string;
+const ToolButton = styled.button<{ $isSelected: boolean }>`
+  padding: 8px 16px;
+  background-color: ${(props) => (props.$isSelected ? "#4a4a4a" : "#333")};
+  border: 1px solid #444;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #4a4a4a;
+  }
+`;
+
+interface ToolBarProps {
+  toolbarProps: ToolbarProps;
+  onSetToolbarProps: (toolbarProps: ToolbarProps) => void;
 }
 
-const ToolBar: React.FC<CharacterSelectorProps> = ({
-  onSelect,
-  selectedChar,
-}) => {
+const ToolBar: React.FC<ToolBarProps> = ({ toolbarProps, onSetToolbarProps }) => {
   const [customChar, setCustomChar] = useState("");
 
   const presetChars = [" ", ".", "-", "+", "*", "#", "@", "&", "%", "$"];
@@ -72,26 +91,78 @@ const ToolBar: React.FC<CharacterSelectorProps> = ({
     }
   };
 
+  const { selectedChar, selectedTool, selectedCharColor } = toolbarProps;
+
+  const onSelect = (char: string) => {
+    onSetToolbarProps({ ...toolbarProps, selectedChar: char });
+  };
+
+  const onToolSelect = (tool: ToolType) => {
+    onSetToolbarProps({ ...toolbarProps, selectedTool: tool });
+  };
+
+  const onCharColorChange = (color: Color) => {
+    onSetToolbarProps({ ...toolbarProps, selectedCharColor: color });
+  };
+
   return (
     <Container>
-      <Input
-        type="text"
-        value={customChar}
-        onChange={handleCustomCharChange}
-        placeholder="Type a character..."
-        maxLength={1}
-      />
-      <PresetContainer>
-        {presetChars.map((char) => (
-          <PresetButton
-            key={char}
-            isSelected={selectedChar === char}
-            onClick={() => onSelect(char)}
-          >
-            {char}
-          </PresetButton>
-        ))}
-      </PresetContainer>
+      <div style={{ display: "flex", gap: "10px" }}>
+        <ToolButton
+          $isSelected={selectedTool === ToolType.Brush}
+          onClick={() => onToolSelect(ToolType.Brush)}
+        >
+          Brush
+        </ToolButton>
+        <ToolButton
+          $isSelected={selectedTool === ToolType.Line}
+          onClick={() => onToolSelect(ToolType.Line)}
+        >
+          Line
+        </ToolButton>
+      </div>
+      <CharacterContainer>
+        <Input
+          type="text"
+          value={customChar}
+          onChange={handleCustomCharChange}
+          placeholder="Type a character..."
+          maxLength={1}
+        />
+        <PresetContainer>
+          {presetChars.map((char) => (
+            <PresetButton
+              key={char}
+              $isSelected={selectedChar === char}
+              onClick={() => onSelect(char)}
+            >
+              {char}
+            </PresetButton>
+          ))}
+        </PresetContainer>
+        <ColorPicker.Root
+          defaultValue={selectedCharColor}
+          size="md"
+          onValueChangeEnd={(value) => onCharColorChange(value.value)}
+        >
+          <ColorPicker.HiddenInput />
+          <ColorPicker.Label>Character Color</ColorPicker.Label>
+          <ColorPicker.Control>
+            <ColorPicker.Trigger />
+          </ColorPicker.Control>
+          <Portal>
+            <ColorPicker.Positioner>
+              <ColorPicker.Content>
+                <ColorPicker.Area />
+                <HStack>
+                  <ColorPicker.EyeDropper size="xs" variant="outline" />
+                  <ColorPicker.Sliders />
+                </HStack>
+              </ColorPicker.Content>
+            </ColorPicker.Positioner>
+          </Portal>
+        </ColorPicker.Root>
+      </CharacterContainer>
     </Container>
   );
 };

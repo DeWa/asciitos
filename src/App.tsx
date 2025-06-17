@@ -1,7 +1,9 @@
 import { useState } from "react";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import AsciiGrid from "./components/AsciiGrid";
 import ToolBar from "./components/ToolBar";
+import { DEFAULT_TOOLBAR_PROPS } from "./consts";
+import type { ToolbarProps } from "./types";
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -26,14 +28,14 @@ const EditorContainer = styled.div`
 `;
 
 function App() {
-  const [selectedChar, setSelectedChar] = useState(" ");
+  const [toolbarProps, setToolbarProps] = useState<ToolbarProps>(DEFAULT_TOOLBAR_PROPS);
 
   return (
     <AppContainer>
       <Title>Asciitos</Title>
       <EditorContainer>
-        <ToolBar selectedChar={selectedChar} onSelect={setSelectedChar} />
-        <AsciiGrid selectedChar={selectedChar} />
+        <ToolBar toolbarProps={toolbarProps} onSetToolbarProps={setToolbarProps} />
+        <AsciiGrid toolbarProps={toolbarProps} />
       </EditorContainer>
     </AppContainer>
   );

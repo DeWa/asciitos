@@ -1,5 +1,10 @@
-import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import styled from "@emotion/styled";
+import { ToolType, type ToolbarProps } from "../types";
+import Brush from "../tools/Brush";
+import Line from "../tools/Line";
+import { parseColor } from "@chakra-ui/react";
+import type { GridCell } from "../types";
 
 const GridContainer = styled.div`
   display: grid;
@@ -15,13 +20,13 @@ const GridContainer = styled.div`
   width: 100%;
 `;
 
-const GridCell = styled.div<{ isSelected: boolean }>`
+const GridCell = styled.div<{ $isSelected: boolean }>`
   width: 15px;
   height: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => (props.isSelected ? "#4a4a4a" : "#333")};
+  background-color: ${(props) => (props.$isSelected ? "#4a4a4a" : "#333")};
   color: #fff;
   cursor: pointer;
   user-select: none;
@@ -33,63 +38,67 @@ const GridCell = styled.div<{ isSelected: boolean }>`
 `;
 
 interface AsciiGridProps {
-  selectedChar: string;
+  toolbarProps: ToolbarProps;
 }
 
-const AsciiGrid: React.FC<AsciiGridProps> = ({ selectedChar }) => {
-  const [grid, setGrid] = useState<string[][]>(
+const tools = {
+  [ToolType.Brush]: new Brush(),
+  [ToolType.Line]: new Line(),
+};
+
+const AsciiGrid: React.FC<AsciiGridProps> = ({ toolbarProps }) => {
+  const { selectedChar, selectedTool } = toolbarProps;
+
+  const [grid, setGrid] = useState<GridCell[][]>(
     Array(25)
       .fill(null)
-      .map(() => Array(80).fill(" "))
+      .map(() =>
+        Array(80).fill({
+          char: " ",
+          charColor: parseColor("#ffffff"),
+          backgroundColor: parseColor("#000000"),
+        })
+      )
   );
-  const [selectedCell, setSelectedCell] = useState<[number, number] | null>(null);
-  const isDrawing = useRef(false);
-
-  const handleCellClick = (row: number, col: number) => {
-    const newGrid = [...grid];
-    newGrid[row][col] = selectedChar;
-    setGrid(newGrid);
-    setSelectedCell([row, col]);
-  };
+  tools[ToolType.Brush].updateProps({ setGrid, getGrid: () => grid, selectedChar, toolbarProps });
+  tools[ToolType.Line].updateProps({ setGrid, getGrid: () => grid, selectedChar, toolbarProps });
 
   const handleMouseDown = (row: number, col: number) => {
-    isDrawing.current = true;
-    handleCellClick(row, col);
+    tools[selectedTool].handleMouseDown(row, col);
   };
 
   const handleMouseOver = (row: number, col: number) => {
-    if (isDrawing.current) {
-      handleCellClick(row, col);
-    }
+    tools[selectedTool].handleMouseOver(row, col);
   };
 
-  const handleMouseUp = () => {
-    isDrawing.current = false;
+  const handleMouseUp = (row: number, col: number) => {
+    tools[selectedTool].handleMouseUp(row, col);
   };
 
   // Add event listeners for mouse up outside the grid
   React.useEffect(() => {
-    const handleGlobalMouseUp = () => {
-      isDrawing.current = false;
-    };
-
-    window.addEventListener("mouseup", handleGlobalMouseUp);
+    window.addEventListener("mouseup", tools[selectedTool].handleMouseUpOutside);
     return () => {
-      window.removeEventListener("mouseup", handleGlobalMouseUp);
+      window.removeEventListener("mouseup", tools[selectedTool].handleMouseUpOutside);
     };
   }, []);
 
   return (
-    <GridContainer onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>
+    <GridContainer onMouseLeave={() => handleMouseUp(0, 0)}>
       {grid.map((row, rowIndex) =>
         row.map((cell, colIndex) => (
           <GridCell
             key={`${rowIndex}-${colIndex}`}
-            isSelected={selectedCell?.[0] === rowIndex && selectedCell?.[1] === colIndex}
+            $isSelected={false}
             onMouseDown={() => handleMouseDown(rowIndex, colIndex)}
             onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
+            onMouseUp={() => handleMouseUp(rowIndex, colIndex)}
+            style={{
+              backgroundColor: cell.backgroundColor.toString("css"),
+              color: cell.charColor.toString("css"),
+            }}
           >
-            {cell}
+            {cell.char}
           </GridCell>
         ))
       )}
