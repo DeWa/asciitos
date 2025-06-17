@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { ToolType, type ToolbarProps } from "../types";
 import Brush from "../tools/Brush";
 import Line from "../tools/Line";
+import Circle from "../tools/Circle";
 import { parseColor } from "@chakra-ui/react";
 import type { GridCell } from "../types";
 
@@ -44,6 +45,7 @@ interface AsciiGridProps {
 const tools = {
   [ToolType.Brush]: new Brush(),
   [ToolType.Line]: new Line(),
+  [ToolType.Circle]: new Circle(),
 };
 
 const AsciiGrid: React.FC<AsciiGridProps> = ({ toolbarProps }) => {
@@ -60,8 +62,11 @@ const AsciiGrid: React.FC<AsciiGridProps> = ({ toolbarProps }) => {
         })
       )
   );
-  tools[ToolType.Brush].updateProps({ setGrid, getGrid: () => grid, selectedChar, toolbarProps });
-  tools[ToolType.Line].updateProps({ setGrid, getGrid: () => grid, selectedChar, toolbarProps });
+
+  // Update tool props
+  for (const tool of Object.values(tools)) {
+    tool.updateProps({ setGrid, getGrid: () => grid, selectedChar, toolbarProps });
+  }
 
   const handleMouseDown = (row: number, col: number) => {
     tools[selectedTool].handleMouseDown(row, col);

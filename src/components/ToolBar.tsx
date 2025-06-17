@@ -120,6 +120,12 @@ const ToolBar: React.FC<ToolBarProps> = ({ toolbarProps, onSetToolbarProps }) =>
         >
           Line
         </ToolButton>
+        <ToolButton
+          $isSelected={selectedTool === ToolType.Circle}
+          onClick={() => onToolSelect(ToolType.Circle)}
+        >
+          Circle
+        </ToolButton>
       </div>
       <CharacterContainer>
         <Input

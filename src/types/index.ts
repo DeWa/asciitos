@@ -3,6 +3,7 @@ import type { Color } from "@chakra-ui/react";
 export enum ToolType {
   Brush = "brush",
   Line = "line",
+  Circle = "circle",
 }
 
 export interface ToolProps {
