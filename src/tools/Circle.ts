@@ -86,8 +86,8 @@ export default class Circle extends Tool {
 
   private setPixel(grid: GridCell[][], x: number, y: number): void {
     // Check if the coordinates are within the grid bounds
-    if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
-      grid[x][y] = {
+    if (x >= 0 && x < grid[0].length && y >= 0 && y < grid.length) {
+      grid[y][x] = {
         char: this.toolbarProps.selectedChar,
         charColor: this.toolbarProps.selectedCharColor,
         backgroundColor: this.toolbarProps.selectedBgColor,

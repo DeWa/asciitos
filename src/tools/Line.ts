@@ -67,7 +67,7 @@ export default class Line extends Tool {
       let ny = y0;
 
       while (true) {
-        newGrid[nx][ny] = {
+        newGrid[ny][nx] = {
           char: this.selectedChar,
           charColor: this.toolbarProps.selectedCharColor,
           backgroundColor: this.toolbarProps.selectedBgColor,

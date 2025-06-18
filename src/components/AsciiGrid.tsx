@@ -95,9 +95,9 @@ const AsciiGrid: React.FC<AsciiGridProps> = ({ toolbarProps }) => {
           <GridCell
             key={`${rowIndex}-${colIndex}`}
             $isSelected={false}
-            onMouseDown={() => handleMouseDown(rowIndex, colIndex)}
-            onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
-            onMouseUp={() => handleMouseUp(rowIndex, colIndex)}
+            onMouseDown={() => handleMouseDown(colIndex, rowIndex)}
+            onMouseOver={() => handleMouseOver(colIndex, rowIndex)}
+            onMouseUp={() => handleMouseUp(colIndex, rowIndex)}
             style={{
               backgroundColor: cell.backgroundColor.toString("css"),
               color: cell.charColor.toString("css"),

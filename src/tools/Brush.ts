@@ -6,7 +6,7 @@ export default class Brush extends Tool {
   handleMouseDown(x: number, y: number): void {
     this.isDrawing = true;
     const newGrid = [...this.getGrid()];
-    newGrid[x][y] = {
+    newGrid[y][x] = {
       char: this.selectedChar,
       charColor: this.toolbarProps.selectedCharColor,
       backgroundColor: this.toolbarProps.selectedBgColor,
@@ -17,7 +17,7 @@ export default class Brush extends Tool {
   handleMouseOver(x: number, y: number): void {
     if (this.isDrawing) {
       const newGrid = [...this.getGrid()];
-      newGrid[x][y] = {
+      newGrid[y][x] = {
         char: this.selectedChar,
         charColor: this.toolbarProps.selectedCharColor,
         backgroundColor: this.toolbarProps.selectedBgColor,
