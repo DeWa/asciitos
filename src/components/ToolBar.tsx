@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { ColorPicker, HStack, Portal, type Color } from "@chakra-ui/react";
+import { FaBroom, FaFill } from "react-icons/fa6";
+import { TbLine } from "react-icons/tb";
+import { FaRegCircle } from "react-icons/fa";
 import { ToolType, type ToolbarProps } from "../types";
 
 const Container = styled.div`
@@ -115,20 +118,30 @@ const ToolBar: React.FC<ToolBarProps> = ({ toolbarProps, onSetToolbarProps }) =>
         <ToolButton
           $isSelected={selectedTool === ToolType.Brush}
           onClick={() => onToolSelect(ToolType.Brush)}
+          title="Brush"
         >
-          Brush
+          <FaBroom />
         </ToolButton>
         <ToolButton
           $isSelected={selectedTool === ToolType.Line}
           onClick={() => onToolSelect(ToolType.Line)}
+          title="Line"
         >
-          Line
+          <TbLine />
         </ToolButton>
         <ToolButton
           $isSelected={selectedTool === ToolType.Circle}
           onClick={() => onToolSelect(ToolType.Circle)}
+          title="Circle"
         >
-          Circle
+          <FaRegCircle />
+        </ToolButton>
+        <ToolButton
+          $isSelected={selectedTool === ToolType.Fill}
+          onClick={() => onToolSelect(ToolType.Fill)}
+          title="Fill"
+        >
+          <FaFill />
         </ToolButton>
       </div>
       <CharacterContainer>
