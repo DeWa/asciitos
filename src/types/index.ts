@@ -4,6 +4,7 @@ export enum ToolType {
   Brush = "brush",
   Line = "line",
   Circle = "circle",
+  Fill = "fill",
 }
 
 export interface ToolProps {

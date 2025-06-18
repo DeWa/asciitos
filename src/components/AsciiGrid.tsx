@@ -6,6 +6,7 @@ import Line from "../tools/Line";
 import Circle from "../tools/Circle";
 import { parseColor } from "@chakra-ui/react";
 import type { GridCell } from "../types";
+import Fill from "../tools/Fill";
 
 const GridContainer = styled.div`
   display: grid;
@@ -46,6 +47,7 @@ const tools = {
   [ToolType.Brush]: new Brush(),
   [ToolType.Line]: new Line(),
   [ToolType.Circle]: new Circle(),
+  [ToolType.Fill]: new Fill(),
 };
 
 const AsciiGrid: React.FC<AsciiGridProps> = ({ toolbarProps }) => {
