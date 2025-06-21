@@ -68,12 +68,13 @@ export default class TextArt extends Tool {
 
     const lines = asciiArt.split("\n");
     const newGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
+    const offsetX = 10;
+    const offsetY = 2;
 
-    // Draw the ASCII art text
     lines.forEach((line, dy) => {
       [...line].forEach((char, dx) => {
-        const targetY = y + dy;
-        const targetX = x + dx;
+        const targetY = y + dy - offsetY;
+        const targetX = x + dx - offsetX;
 
         if (
           targetY >= 0 &&
@@ -94,7 +95,7 @@ export default class TextArt extends Tool {
     return newGrid;
   }
 
-  handleMouseDown(x: number, y: number): void {
+  handleMouseDown = (x: number, y: number): void => {
     if (!this.originalGrid) return;
     this.setGrid(this.originalGrid);
 
@@ -103,31 +104,27 @@ export default class TextArt extends Tool {
     const newGrid = this.printText(this.originalGrid, this.options.text, x, y);
     this.setGrid(newGrid);
     this.originalGrid = newGrid;
-  }
+  };
 
-  handleMouseOver(x: number, y: number): void {
+  handleMouseOver = (x: number, y: number): void => {
     if (!this.originalGrid) return;
     this.setGrid(this.originalGrid);
     if (!this.options.text) return;
 
     const newGrid = this.printText(this.originalGrid, this.options.text, x, y);
     this.setGrid(newGrid);
-  }
+  };
 
-  handleMouseUp(): void {}
-
-  handleDeselect(): void {
+  handleDeselect = (): void => {
     if (this.originalGrid) {
       this.setGrid(this.originalGrid);
     }
-  }
+  };
 
-  handleSelect(): void {
+  handleSelect = (): void => {
     this.originalGrid = this.getGrid();
     this.options = this.getToolOptions()[this.type] as TextArtToolOption;
-  }
-
-  handleMouseUpOutside(): void {}
+  };
 
   getFonts(): Promise<string[]> {
     return new Promise((resolve) => {

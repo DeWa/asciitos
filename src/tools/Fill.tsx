@@ -44,7 +44,7 @@ export default class Fill extends Tool {
   };
   options: FillToolOption = this.defaultToolOption;
 
-  handleMouseDown(x: number, y: number): void {
+  handleMouseDown = (x: number, y: number): void => {
     const grid = this.getGrid();
     const targetChar = grid[y][x].char;
     const targetCharColor = grid[y][x].charColor;
@@ -58,19 +58,11 @@ export default class Fill extends Tool {
 
     const newGrid = this.floodFill(grid, x, y, targetChar, targetCharColor, targetBgColor);
     this.setGrid(newGrid);
-  }
+  };
 
-  handleMouseOver(): void {}
-
-  handleMouseUp(): void {}
-
-  handleDeselect(): void {}
-
-  handleSelect(): void {
+  handleSelect = (): void => {
     this.options = this.getToolOptions()[this.type] as FillToolOption;
-  }
-
-  handleMouseUpOutside(): void {}
+  };
 
   private floodFill(
     grid: GridCell[][],

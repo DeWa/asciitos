@@ -9,12 +9,28 @@ export abstract class Tool {
   getToolOptions: () => Record<ToolType, ToolOption> = () => ({}) as Record<ToolType, ToolOption>;
   selectedChar: string = " ";
 
-  abstract handleMouseDown(x: number, y: number): void;
-  abstract handleMouseOver(x: number, y: number): void;
-  abstract handleMouseUp(x: number, y: number): void;
-  abstract handleDeselect(): void;
-  abstract handleSelect(): void;
-  abstract handleMouseUpOutside(): void;
+  handleMouseDown = (_x: number, _y: number): void => {
+    //pass
+  };
+  handleMouseOver = (_x: number, _y: number): void => {
+    //pass
+  };
+  handleMouseUp = (_x: number, _y: number): void => {
+    //pass
+  };
+  handleDeselect = (): void => {
+    //pass
+  };
+  handleSelect = (): void => {
+    //pass
+  };
+  handleMouseUpOutside = (): void => {
+    //pass
+  };
+  handleKeyDown = (_event: KeyboardEvent): void => {
+    //pass
+  };
+
   updateProps(props: {
     setGrid: (grid: GridCell[][]) => void;
     getGrid: () => GridCell[][];

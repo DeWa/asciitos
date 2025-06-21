@@ -45,7 +45,7 @@ export default class Brush extends Tool {
   options: BrushToolOption = this.defaultToolOption;
   isDrawing = false;
 
-  handleMouseDown(x: number, y: number): void {
+  handleMouseDown = (x: number, y: number): void => {
     this.isDrawing = true;
     const newGrid = [...this.getGrid()];
     newGrid[y][x] = {
@@ -54,9 +54,9 @@ export default class Brush extends Tool {
       backgroundColor: this.options.backgroundColor,
     };
     this.setGrid(newGrid);
-  }
+  };
 
-  handleMouseOver(x: number, y: number): void {
+  handleMouseOver = (x: number, y: number): void => {
     if (this.isDrawing) {
       const newGrid = [...this.getGrid()];
       newGrid[y][x] = {
@@ -66,23 +66,23 @@ export default class Brush extends Tool {
       };
       this.setGrid(newGrid);
     }
-  }
+  };
 
-  handleMouseUp(_x: number, _y: number): void {
+  handleMouseUp = (_x: number, _y: number): void => {
     this.isDrawing = false;
-  }
+  };
 
-  handleDeselect(): void {
+  handleDeselect = (): void => {
     this.isDrawing = false;
-  }
+  };
 
-  handleSelect(): void {
+  handleSelect = (): void => {
     this.options = this.getToolOptions()[this.type] as BrushToolOption;
-  }
+  };
 
-  handleMouseUpOutside(): void {
+  handleMouseUpOutside = (): void => {
     this.isDrawing = false;
-  }
+  };
 
   handleCustomCharChange(char: string): void {
     const newOptions = { ...this.options, char };

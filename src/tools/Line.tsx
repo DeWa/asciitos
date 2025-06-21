@@ -48,7 +48,7 @@ export default class Line extends Tool {
   };
   options: LineToolOption = this.defaultToolOption;
 
-  handleMouseDown(x: number, y: number): void {
+  handleMouseDown = (x: number, y: number): void => {
     if (!this.isDrawingPreview) {
       this.startingCell = [x, y];
       this.isDrawingPreview = true;
@@ -63,9 +63,9 @@ export default class Line extends Tool {
         this.startingCell = null;
       }
     }
-  }
+  };
 
-  handleMouseOver(x: number, y: number): void {
+  handleMouseOver = (x: number, y: number): void => {
     if (this.isDrawingPreview) {
       if (this.startingCell && this.originalGrid) {
         const originalGrid = [...this.originalGrid];
@@ -78,17 +78,11 @@ export default class Line extends Tool {
         this.setGrid(newGrid);
       }
     }
-  }
+  };
 
-  handleMouseUp(_x: number, _y: number): void {}
-
-  handleDeselect(): void {}
-
-  handleSelect(): void {
+  handleSelect = (): void => {
     this.options = this.getToolOptions()[this.type] as LineToolOption;
-  }
-
-  handleMouseUpOutside(): void {}
+  };
 
   drawLine(grid: GridCell[][], x: number, y: number): GridCell[][] {
     if (this.startingCell) {

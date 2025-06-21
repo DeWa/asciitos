@@ -63,7 +63,7 @@ export default class Circle extends Tool {
   center: [number, number] | null = null;
   originalGrid: GridCell[][] | null = null;
 
-  handleMouseDown(x: number, y: number): void {
+  handleMouseDown = (x: number, y: number): void => {
     if (!this.isDrawingPreview) {
       this.center = [x, y];
       this.isDrawingPreview = true;
@@ -78,9 +78,9 @@ export default class Circle extends Tool {
         this.center = null;
       }
     }
-  }
+  };
 
-  handleMouseOver(x: number, y: number): void {
+  handleMouseOver = (x: number, y: number): void => {
     if (this.isDrawingPreview) {
       if (this.center && this.originalGrid) {
         const originalGrid = this.originalGrid.map((row) => [...row]);
@@ -93,17 +93,11 @@ export default class Circle extends Tool {
         this.setGrid(newGrid);
       }
     }
-  }
+  };
 
-  handleMouseUp(): void {}
-
-  handleDeselect(): void {}
-
-  handleSelect(): void {
+  handleSelect = (): void => {
     this.options = this.getToolOptions()[this.type] as CircleToolOption;
-  }
-
-  handleMouseUpOutside(): void {}
+  };
 
   drawCircle(grid: GridCell[][], x: number, y: number): GridCell[][] {
     if (!this.center) return grid;

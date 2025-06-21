@@ -81,7 +81,7 @@ export default class Rectangle extends Tool {
   };
   options: RectangleToolOption = this.defaultToolOption;
 
-  handleMouseDown(x: number, y: number): void {
+  handleMouseDown = (x: number, y: number): void => {
     if (!this.isDrawingPreview) {
       this.startCorner = [x, y];
       this.isDrawingPreview = true;
@@ -96,25 +96,19 @@ export default class Rectangle extends Tool {
         this.startCorner = null;
       }
     }
-  }
+  };
 
-  handleMouseOver(x: number, y: number): void {
+  handleMouseOver = (x: number, y: number): void => {
     if (this.isDrawingPreview && this.startCorner && this.originalGrid) {
       const originalGrid = this.originalGrid.map((row) => row.map((cell) => ({ ...cell })));
       const newGrid = this.drawRectangle(originalGrid, x, y);
       this.setGrid(newGrid);
     }
-  }
+  };
 
-  handleMouseUp(): void {}
-
-  handleDeselect(): void {}
-
-  handleSelect(): void {
+  handleSelect = (): void => {
     this.options = this.getToolOptions()[this.type] as RectangleToolOption;
-  }
-
-  handleMouseUpOutside(): void {}
+  };
 
   private drawRectangle(grid: GridCell[][], x: number, y: number): GridCell[][] {
     if (!this.startCorner) return grid;
