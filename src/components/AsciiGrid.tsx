@@ -7,7 +7,6 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(80, 1fr);
   grid-template-rows: repeat(25, 1fr);
-  gap: 1px;
   background-color: #2a2a2a;
   padding: 10px;
   border-radius: 4px;
@@ -27,6 +26,7 @@ const GridCell = styled.div<{ $isSelected: boolean }>`
   color: #fff;
   cursor: pointer;
   user-select: none;
+  border: 1px solid #444;
 
   &:hover {
     background-color: #4a4a4a;
