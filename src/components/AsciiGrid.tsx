@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import type { GridCell, ToolType } from "../types";
+import type { EditorOptions, GridCell, ToolType } from "../types";
 import type { Tool } from "../tools";
 
 const GridContainer = styled.div`
@@ -16,7 +16,11 @@ const GridContainer = styled.div`
   width: 100%;
 `;
 
-const GridCell = styled.div<{ $isSelected: boolean; $isBlinking: boolean }>`
+const GridCell = styled.div<{
+  $isSelected: boolean;
+  $isBlinking: boolean;
+  $isGridEnabled: boolean;
+}>`
   width: 15px;
   height: 15px;
   display: flex;
@@ -26,7 +30,7 @@ const GridCell = styled.div<{ $isSelected: boolean; $isBlinking: boolean }>`
   color: #fff;
   cursor: pointer;
   user-select: none;
-  border: 1px solid #444;
+  border: ${(props) => (props.$isGridEnabled ? "1px solid #444" : "none")};
   animation: ${(props) => (props.$isBlinking ? "blinker 1s infinite" : "none")};
 
   &:hover {
@@ -38,9 +42,10 @@ interface AsciiGridProps {
   grid: GridCell[][];
   tools: Record<ToolType, Tool>;
   selectedTool: ToolType;
+  editorOptions: EditorOptions;
 }
 
-const AsciiGrid: React.FC<AsciiGridProps> = ({ grid, tools, selectedTool }) => {
+const AsciiGrid: React.FC<AsciiGridProps> = ({ grid, tools, selectedTool, editorOptions }) => {
   const handleMouseDown = (row: number, col: number) => {
     tools[selectedTool].handleMouseDown(row, col);
   };
@@ -71,6 +76,7 @@ const AsciiGrid: React.FC<AsciiGridProps> = ({ grid, tools, selectedTool }) => {
             key={`${rowIndex}-${colIndex}`}
             $isSelected={false}
             $isBlinking={cell.isBlinking ?? false}
+            $isGridEnabled={editorOptions.showGrid}
             onMouseDown={() => handleMouseDown(colIndex, rowIndex)}
             onMouseOver={() => handleMouseOver(colIndex, rowIndex)}
             onMouseUp={() => handleMouseUp(colIndex, rowIndex)}

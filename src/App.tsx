@@ -3,8 +3,9 @@ import styled from "@emotion/styled";
 import AsciiGrid from "./components/AsciiGrid";
 import ToolBar from "./components/ToolBar";
 import { TOOLS } from "./consts";
-import { ToolType, type GridCell, type ToolOption } from "./types";
+import { ToolType, type EditorOptions, type GridCell, type ToolOption } from "./types";
 import { parseColor } from "@chakra-ui/react";
+import PageSelector from "./components/PageSelector";
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -40,7 +41,6 @@ function App() {
       ])
     ) as Record<ToolType, ToolOption>
   );
-
   const [grid, setGrid] = useState<GridCell[][]>(
     Array(25)
       .fill(null)
@@ -52,6 +52,14 @@ function App() {
         })
       )
   );
+  const [pages, setPages] = useState<Record<string, GridCell[][]>>({
+    Main: grid,
+  });
+  const [actionHistory, setActionHistory] = useState<GridCell[][][]>([]);
+  const [editorOptions, setEditorOptions] = useState<EditorOptions>({
+    showGrid: true,
+  });
+  const [openPageSelector, setOpenPageSelector] = useState(false);
 
   useEffect(() => {
     for (const tool of Object.values(tools)) {
@@ -62,15 +70,32 @@ function App() {
         getToolOptions: () => toolOptions,
       });
     }
-  }, [grid, toolOptions, selectedTool]);
+  }, [grid, toolOptions, selectedTool, pages]);
 
   return (
     <AppContainer>
       <Title>Asciitos</Title>
       <EditorContainer>
-        <ToolBar tools={tools} selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
-        <AsciiGrid grid={grid} tools={tools} selectedTool={selectedTool} />
+        <ToolBar
+          tools={tools}
+          selectedTool={selectedTool}
+          setSelectedTool={setSelectedTool}
+          pages={pages}
+          setPages={setPages}
+          actionHistory={actionHistory}
+          setActionHistory={setActionHistory}
+          editorOptions={editorOptions}
+          setEditorOptions={setEditorOptions}
+          setOpenPageSelector={setOpenPageSelector}
+        />
+        <AsciiGrid
+          grid={grid}
+          tools={tools}
+          selectedTool={selectedTool}
+          editorOptions={editorOptions}
+        />
       </EditorContainer>
+      <PageSelector open={openPageSelector} setOpen={setOpenPageSelector} />
     </AppContainer>
   );
 }

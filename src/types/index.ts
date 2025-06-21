@@ -32,3 +32,7 @@ export interface GridCell {
   backgroundColor: Color;
   isBlinking?: boolean;
 }
+
+export interface EditorOptions {
+  showGrid: boolean;
+}
