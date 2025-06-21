@@ -5,6 +5,7 @@ import type { LineToolOption } from "../tools/Line";
 import type { FillToolOption } from "../tools/Fill";
 import type { RectangleToolOption } from "../tools/Rectangle";
 import type { TextArtToolOption } from "../tools/TextArt";
+import type { TextToolOption } from "../tools/Text";
 
 export enum ToolType {
   Brush = "brush",
@@ -13,6 +14,7 @@ export enum ToolType {
   Fill = "fill",
   Rectangle = "rectangle",
   TextArt = "text-art",
+  Text = "text",
 }
 
 export type ToolOption =
@@ -21,15 +23,12 @@ export type ToolOption =
   | LineToolOption
   | FillToolOption
   | RectangleToolOption
-  | TextArtToolOption;
-
-export interface ToolProps {
-  setGrid: (grid: GridCell[][]) => void;
-  getGrid: () => GridCell[][];
-}
+  | TextArtToolOption
+  | TextToolOption;
 
 export interface GridCell {
   char: string;
   charColor: Color;
   backgroundColor: Color;
+  isBlinking?: boolean;
 }

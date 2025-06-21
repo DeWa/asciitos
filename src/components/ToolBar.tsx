@@ -4,6 +4,7 @@ import { FaBroom, FaFill } from "react-icons/fa6";
 import { TbLine } from "react-icons/tb";
 import { FaRegCircle } from "react-icons/fa";
 import { LuRectangleHorizontal } from "react-icons/lu";
+import { PiTextAa } from "react-icons/pi";
 import { CiText } from "react-icons/ci";
 import { ToolType } from "../types";
 import type { Tool } from "../tools";
@@ -64,6 +65,13 @@ const ToolBar: React.FC<ToolBarProps> = ({ tools, selectedTool, setSelectedTool 
           title="Brush"
         >
           <FaBroom />
+        </ToolButton>
+        <ToolButton
+          $isSelected={selectedTool === ToolType.Text}
+          onClick={() => onToolSelect(ToolType.Text)}
+          title="Text"
+        >
+          <PiTextAa />
         </ToolButton>
         <ToolButton
           $isSelected={selectedTool === ToolType.Line}

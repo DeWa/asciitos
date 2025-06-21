@@ -5,6 +5,7 @@ import TextArt from "./tools/TextArt";
 import Brush from "./tools/Brush";
 import Line from "./tools/Line";
 import Circle from "./tools/Circle";
+import Text from "./tools/Text";
 
 export const TOOLS = {
   [ToolType.Brush]: new Brush(),
@@ -13,6 +14,7 @@ export const TOOLS = {
   [ToolType.Fill]: new Fill(),
   [ToolType.Rectangle]: new Rectangle(),
   [ToolType.TextArt]: new TextArt(),
+  [ToolType.Text]: new Text(),
 };
 
 export const PRESET_CHARS = [" ", ".", "-", "+", "*", "#", "@", "&", "%", "$"];

@@ -16,17 +16,18 @@ const GridContainer = styled.div`
   width: 100%;
 `;
 
-const GridCell = styled.div<{ $isSelected: boolean }>`
+const GridCell = styled.div<{ $isSelected: boolean; $isBlinking: boolean }>`
   width: 15px;
   height: 15px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: ${(props) => (props.$isBlinking ? "left" : "center")};
   background-color: ${(props) => (props.$isSelected ? "#4a4a4a" : "#333")};
   color: #fff;
   cursor: pointer;
   user-select: none;
   border: 1px solid #444;
+  animation: ${(props) => (props.$isBlinking ? "blinker 1s infinite" : "none")};
 
   &:hover {
     background-color: #4a4a4a;
@@ -52,13 +53,15 @@ const AsciiGrid: React.FC<AsciiGridProps> = ({ grid, tools, selectedTool }) => {
     tools[selectedTool].handleMouseUp(row, col);
   };
 
-  // Add event listeners for mouse up outside the grid
+  // Add global event listener for mouse and keyboard events
   React.useEffect(() => {
     window.addEventListener("mouseup", tools[selectedTool].handleMouseUpOutside);
+    window.addEventListener("keydown", tools[selectedTool].handleKeyDown);
     return () => {
       window.removeEventListener("mouseup", tools[selectedTool].handleMouseUpOutside);
+      window.removeEventListener("keydown", tools[selectedTool].handleKeyDown);
     };
-  }, []);
+  }, [tools, selectedTool]);
 
   return (
     <GridContainer onMouseLeave={() => handleMouseUp(0, 0)}>
@@ -67,6 +70,7 @@ const AsciiGrid: React.FC<AsciiGridProps> = ({ grid, tools, selectedTool }) => {
           <GridCell
             key={`${rowIndex}-${colIndex}`}
             $isSelected={false}
+            $isBlinking={cell.isBlinking ?? false}
             onMouseDown={() => handleMouseDown(colIndex, rowIndex)}
             onMouseOver={() => handleMouseOver(colIndex, rowIndex)}
             onMouseUp={() => handleMouseUp(colIndex, rowIndex)}
