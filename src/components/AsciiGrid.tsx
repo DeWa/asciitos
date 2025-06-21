@@ -1,12 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
-import { ToolType, type ToolbarProps } from "../types";
-import Brush from "../tools/Brush";
-import Line from "../tools/Line";
-import Circle from "../tools/Circle";
-import { parseColor } from "@chakra-ui/react";
-import type { GridCell } from "../types";
-import Fill from "../tools/Fill";
+import type { GridCell, ToolType } from "../types";
+import type { Tool } from "../tools";
 
 const GridContainer = styled.div`
   display: grid;
@@ -32,7 +27,6 @@ const GridCell = styled.div<{ $isSelected: boolean }>`
   color: #fff;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.2s;
 
   &:hover {
     background-color: #4a4a4a;
@@ -40,36 +34,12 @@ const GridCell = styled.div<{ $isSelected: boolean }>`
 `;
 
 interface AsciiGridProps {
-  toolbarProps: ToolbarProps;
+  grid: GridCell[][];
+  tools: Record<ToolType, Tool>;
+  selectedTool: ToolType;
 }
 
-const tools = {
-  [ToolType.Brush]: new Brush(),
-  [ToolType.Line]: new Line(),
-  [ToolType.Circle]: new Circle(),
-  [ToolType.Fill]: new Fill(),
-};
-
-const AsciiGrid: React.FC<AsciiGridProps> = ({ toolbarProps }) => {
-  const { selectedChar, selectedTool } = toolbarProps;
-
-  const [grid, setGrid] = useState<GridCell[][]>(
-    Array(25)
-      .fill(null)
-      .map(() =>
-        Array(80).fill({
-          char: " ",
-          charColor: parseColor("#ffffff"),
-          backgroundColor: parseColor("#000000"),
-        })
-      )
-  );
-
-  // Update tool props
-  for (const tool of Object.values(tools)) {
-    tool.updateProps({ setGrid, getGrid: () => grid, selectedChar, toolbarProps });
-  }
-
+const AsciiGrid: React.FC<AsciiGridProps> = ({ grid, tools, selectedTool }) => {
   const handleMouseDown = (row: number, col: number) => {
     tools[selectedTool].handleMouseDown(row, col);
   };
