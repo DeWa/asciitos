@@ -1,4 +1,4 @@
 # ASCIITOS
 
-![Current Build](https://github.com/DeWa/asciitos/actions/workflows/main.yml/badge.svg)
+![Current Build](https://github.com/DeWa/asciitos/actions/workflows/build-and-deploy.yml/badge.svg)
 
