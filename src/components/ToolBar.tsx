@@ -96,6 +96,7 @@ const ToolBar: React.FC<ToolBarProps> = ({
         history: currentHistory.history,
         index: previousIndex,
       });
+      tools[selectedTool].handleUndo(previousGrid);
     }
   };
 
@@ -105,11 +106,13 @@ const ToolBar: React.FC<ToolBarProps> = ({
       currentHistory.history.length > 0 &&
       currentHistory.index < currentHistory.history.length - 1
     ) {
-      setGrid(currentHistory.history[currentHistory.index + 1]);
+      const nextGrid = currentHistory.history[currentHistory.index + 1];
+      setGrid(nextGrid);
       setActionHistory({
         history: currentHistory.history,
         index: currentHistory.index + 1,
       });
+      tools[selectedTool].handleRedo(nextGrid);
     }
   };
 

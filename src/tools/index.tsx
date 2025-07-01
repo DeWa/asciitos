@@ -20,6 +20,8 @@ export abstract class Tool {
   public handleSelect = (): void => {};
   public handleMouseUpOutside = (): void => {};
   public handleKeyDown = (_event: KeyboardEvent): void => {};
+  public handleUndo = (_grid: GridCell[][]): void => {};
+  public handleRedo = (_grid: GridCell[][]): void => {};
 
   protected saveHistory(grid: GridCell[][]): void {
     const currentHistory = this.getActionHistory();

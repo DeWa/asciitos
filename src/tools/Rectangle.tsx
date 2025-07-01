@@ -94,6 +94,7 @@ export default class Rectangle extends Tool {
         this.originalGrid = null;
         this.isDrawingPreview = false;
         this.startCorner = null;
+        this.saveHistory(newGrid);
       }
     }
   };

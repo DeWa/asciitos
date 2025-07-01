@@ -58,6 +58,7 @@ export default class Fill extends Tool {
 
     const newGrid = this.floodFill(grid, x, y, targetChar, targetCharColor, targetBgColor);
     this.setGrid(newGrid);
+    this.saveHistory(newGrid);
   };
 
   handleSelect = (): void => {

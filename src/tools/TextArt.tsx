@@ -36,9 +36,8 @@ const layoutCollection = createListCollection({
 export default class TextArt extends Tool {
   type = ToolType.TextArt;
   private font: figlet.Fonts = "Standard";
-  isDrawingPreview = false;
-  startPosition: [number, number] | null = null;
-  originalGrid: GridCell[][] | null = null;
+  private originalGrid: GridCell[][] = this.getGrid();
+  private temporaryGrid: GridCell[][] = this.getGrid();
   defaultToolOption: TextArtToolOption = {
     text: "",
     charColor: parseColor("#ffffff"),
@@ -56,7 +55,9 @@ export default class TextArt extends Tool {
     figlet.preloadFonts(["Standard"]);
   }
 
-  private printText(grid: GridCell[][], text: string, x: number, y: number): GridCell[][] {
+  private printTextToGrid(grid: GridCell[][], text: string, x: number, y: number): GridCell[][] {
+    const newGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
+
     const asciiArt = figlet.textSync(text, {
       font: this.font,
       width: this.options.width,
@@ -67,7 +68,6 @@ export default class TextArt extends Tool {
     if (!asciiArt) return grid;
 
     const lines = asciiArt.split("\n");
-    const newGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
     const offsetX = 10;
     const offsetY = 2;
 
@@ -95,35 +95,31 @@ export default class TextArt extends Tool {
     return newGrid;
   }
 
-  handleMouseDown = (x: number, y: number): void => {
-    if (!this.originalGrid) return;
-    this.setGrid(this.originalGrid);
-
+  override handleMouseDown = (x: number, y: number): void => {
     if (!this.options.text) return;
 
-    const newGrid = this.printText(this.originalGrid, this.options.text, x, y);
-    this.setGrid(newGrid);
-    this.originalGrid = newGrid;
+    this.temporaryGrid = this.printTextToGrid(this.originalGrid, this.options.text, x, y);
+    this.setGrid([...this.temporaryGrid]);
+    this.originalGrid = [...this.temporaryGrid];
+    this.saveHistory([...this.temporaryGrid]);
   };
 
-  handleMouseOver = (x: number, y: number): void => {
-    if (!this.originalGrid) return;
-    this.setGrid(this.originalGrid);
+  override handleMouseOver = (x: number, y: number): void => {
     if (!this.options.text) return;
-
-    const newGrid = this.printText(this.originalGrid, this.options.text, x, y);
-    this.setGrid(newGrid);
+    this.setGrid(this.originalGrid);
+    this.temporaryGrid = this.printTextToGrid(this.originalGrid, this.options.text, x, y);
+    this.setGrid([...this.temporaryGrid]);
   };
 
-  handleDeselect = (): void => {
-    if (this.originalGrid) {
-      this.setGrid(this.originalGrid);
-    }
-  };
-
-  handleSelect = (): void => {
+  override handleSelect = (): void => {
     this.originalGrid = this.getGrid();
+    this.temporaryGrid = this.getGrid();
     this.options = this.getToolOptions()[this.type] as TextArtToolOption;
+  };
+
+  override handleUndo = (grid: GridCell[][]): void => {
+    this.originalGrid = grid;
+    this.temporaryGrid = grid;
   };
 
   getFonts(): Promise<string[]> {

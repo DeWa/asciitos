@@ -76,6 +76,7 @@ export default class Circle extends Tool {
         this.originalGrid = null;
         this.isDrawingPreview = false;
         this.center = null;
+        this.saveHistory(newGrid);
       }
     }
   };
