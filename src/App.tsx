@@ -55,7 +55,10 @@ function App() {
   const [pages, setPages] = useState<Record<string, GridCell[][]>>({
     Main: grid,
   });
-  const [actionHistory, setActionHistory] = useState<GridCell[][][]>([]);
+  const [actionHistory, setActionHistory] = useState<{
+    history: GridCell[][][];
+    index: number;
+  }>({ history: [grid], index: 0 });
   const [editorOptions, setEditorOptions] = useState<EditorOptions>({
     showGrid: true,
   });
@@ -65,12 +68,14 @@ function App() {
     for (const tool of Object.values(tools)) {
       tool.updateProps({
         setGrid,
-        getGrid: () => grid,
+        getGrid: () => grid.map((row) => row.map((cell) => ({ ...cell }))),
         setToolOptions,
         getToolOptions: () => toolOptions,
+        setActionHistory,
+        getActionHistory: () => actionHistory,
       });
     }
-  }, [grid, toolOptions, selectedTool, pages]);
+  }, [grid, toolOptions, selectedTool, pages, actionHistory]);
 
   return (
     <AppContainer>
@@ -87,6 +92,7 @@ function App() {
           editorOptions={editorOptions}
           setEditorOptions={setEditorOptions}
           setOpenPageSelector={setOpenPageSelector}
+          setGrid={setGrid}
         />
         <AsciiGrid
           grid={grid}

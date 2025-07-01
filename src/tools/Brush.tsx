@@ -1,7 +1,7 @@
 import { ColorPicker, HStack, Input, parseColor, Portal, type Color } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { Tool } from ".";
-import { ToolType } from "../types";
+import { ToolType, type GridCell } from "../types";
 import { PRESET_CHARS } from "../consts";
 
 export type BrushToolOption = {
@@ -44,43 +44,37 @@ export default class Brush extends Tool {
   };
   options: BrushToolOption = this.defaultToolOption;
   isDrawing = false;
+  temporaryGrid: GridCell[][] = this.getGrid();
 
   handleMouseDown = (x: number, y: number): void => {
-    this.isDrawing = true;
-    const newGrid = [...this.getGrid()];
-    newGrid[y][x] = {
-      char: this.options.char,
-      charColor: this.options.charColor,
-      backgroundColor: this.options.backgroundColor,
-    };
-    this.setGrid(newGrid);
+    if (!this.isDrawing) {
+      this.isDrawing = true;
+      this.temporaryGrid = this.getGrid();
+      this.drawCharacter(x, y);
+    }
   };
 
   handleMouseOver = (x: number, y: number): void => {
     if (this.isDrawing) {
-      const newGrid = [...this.getGrid()];
-      newGrid[y][x] = {
-        char: this.options.char,
-        charColor: this.options.charColor,
-        backgroundColor: this.options.backgroundColor,
-      };
-      this.setGrid(newGrid);
+      this.drawCharacter(x, y);
     }
   };
 
   handleMouseUp = (_x: number, _y: number): void => {
     this.isDrawing = false;
+    this.endDrawing();
   };
 
-  handleDeselect = (): void => {
+  handleDeselect = () => {
     this.isDrawing = false;
+    this.endDrawing();
   };
 
-  handleSelect = (): void => {
+  handleSelect = () => {
     this.options = this.getToolOptions()[this.type] as BrushToolOption;
   };
 
-  handleMouseUpOutside = (): void => {
+  handleMouseUpOutside = () => {
     this.isDrawing = false;
   };
 
@@ -106,6 +100,20 @@ export default class Brush extends Tool {
     const newOptions = { ...this.options, backgroundColor: color };
     this.setToolOptions({ ...this.getToolOptions(), [this.type]: newOptions });
     this.options = newOptions;
+  }
+
+  private drawCharacter(x: number, y: number): void {
+    this.temporaryGrid[y][x] = {
+      char: this.options.char,
+      charColor: this.options.charColor,
+      backgroundColor: this.options.backgroundColor,
+    };
+    this.setGrid([...this.temporaryGrid]);
+  }
+
+  private endDrawing(): void {
+    this.isDrawing = false;
+    this.saveHistory(this.getGrid());
   }
 
   public getToolOptionsNode(): React.ReactNode {

@@ -50,11 +50,12 @@ interface ToolBarProps {
   setSelectedTool: (tool: ToolType) => void;
   pages: Record<string, GridCell[][]>;
   setPages: (pages: Record<string, GridCell[][]>) => void;
-  actionHistory: GridCell[][][];
-  setActionHistory: (actionHistory: GridCell[][][]) => void;
+  actionHistory: { history: GridCell[][][]; index: number };
+  setActionHistory: (actionHistory: { history: GridCell[][][]; index: number }) => void;
   editorOptions: EditorOptions;
   setEditorOptions: (editorOptions: EditorOptions) => void;
   setOpenPageSelector: (open: boolean) => void;
+  setGrid: (grid: GridCell[][]) => void;
 }
 
 const ToolBar: React.FC<ToolBarProps> = ({
@@ -68,6 +69,7 @@ const ToolBar: React.FC<ToolBarProps> = ({
   editorOptions,
   setEditorOptions,
   setOpenPageSelector,
+  setGrid,
 }) => {
   const onToolSelect = (tool: ToolType) => {
     tools[selectedTool].handleDeselect();
@@ -81,6 +83,34 @@ const ToolBar: React.FC<ToolBarProps> = ({
 
   const onMenuClick = () => {
     setOpenPageSelector(true);
+  };
+
+  const onUndoClick = () => {
+    const currentHistory = actionHistory;
+    if (currentHistory.history.length > 0 && currentHistory.index > 0) {
+      const previousIndex = currentHistory.index - 1;
+      const previousGrid = currentHistory.history[previousIndex];
+
+      setGrid(previousGrid);
+      setActionHistory({
+        history: currentHistory.history,
+        index: previousIndex,
+      });
+    }
+  };
+
+  const onRedoClick = () => {
+    const currentHistory = actionHistory;
+    if (
+      currentHistory.history.length > 0 &&
+      currentHistory.index < currentHistory.history.length - 1
+    ) {
+      setGrid(currentHistory.history[currentHistory.index + 1]);
+      setActionHistory({
+        history: currentHistory.history,
+        index: currentHistory.index + 1,
+      });
+    }
   };
 
   const toolItems = [
@@ -180,11 +210,11 @@ const ToolBar: React.FC<ToolBarProps> = ({
               </Switch.Control>
             </Switch.Root>
             {/* Undo */}
-            <Button size="md" title="Undo" variant="ghost">
+            <Button size="md" title="Undo" variant="ghost" onClick={onUndoClick}>
               <FaUndo />
             </Button>
             {/* Redo */}
-            <Button size="md" title="Redo" variant="ghost">
+            <Button size="md" title="Redo" variant="ghost" onClick={onRedoClick}>
               <FaRedo />
             </Button>
             <Button size="md" title="Menu" variant="ghost" onClick={onMenuClick}>

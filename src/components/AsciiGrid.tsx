@@ -69,7 +69,7 @@ const AsciiGrid: React.FC<AsciiGridProps> = ({ grid, tools, selectedTool, editor
   }, [tools, selectedTool]);
 
   return (
-    <GridContainer onMouseLeave={() => handleMouseUp(0, 0)}>
+    <GridContainer>
       {grid.map((row, rowIndex) =>
         row.map((cell, colIndex) => (
           <GridCell

@@ -55,6 +55,8 @@ export default class Line extends Tool {
       this.originalGrid = [...this.getGrid()];
     } else {
       if (this.startingCell && this.isDrawingPreview && this.originalGrid) {
+        this.saveHistory(this.getGrid());
+
         const newGrid = this.drawLine(this.originalGrid, x, y);
         this.setGrid(newGrid);
 
