@@ -48,25 +48,21 @@ export default class Text extends Tool {
     return grid;
   }
 
-  handleMouseDown = (x: number, y: number) => {
+  override handleMouseDown = (x: number, y: number) => {
     if (!this.isTyping) {
       this.isTyping = true;
       this.pointerPosition = [x, y];
       this.startingPosition = [x, y];
-      this.originalGrid = this.getGrid();
+      this.originalGrid = this.getGrid().map((row) => row.map((cell) => ({ ...cell })));
       const newGrid = this.originalGrid.map((row) => row.map((cell) => ({ ...cell })));
       this.updatePointer(newGrid);
       this.setGrid(newGrid);
     } else {
-      this.isTyping = false;
-      this.startingPosition = null;
-      if (this.originalGrid) {
-        this.setGrid(this.originalGrid);
-      }
+      this.stopTyping();
     }
   };
 
-  handleDeselect = () => {
+  override handleDeselect = (): void => {
     if (this.originalGrid && this.isTyping) {
       this.setGrid(this.originalGrid);
     }
@@ -75,8 +71,9 @@ export default class Text extends Tool {
     this.originalGrid = null;
   };
 
-  handleKeyDown = (event: KeyboardEvent) => {
+  override handleKeyDown = (event: KeyboardEvent) => {
     if (this.isTyping) {
+      // Handle text input
       if (event.key.length === 1 && this.pointerPosition) {
         const grid = this.getGrid();
         const newGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
@@ -89,7 +86,7 @@ export default class Text extends Tool {
         this.pointerPosition[0]++;
         this.updatePointer(newGrid);
         this.setGrid(newGrid);
-        // Handle deletion
+        // Handle deletion (backspace)
       } else if (
         event.key === "Backspace" &&
         this.pointerPosition &&
@@ -109,30 +106,24 @@ export default class Text extends Tool {
         }
         this.updatePointer(newGrid);
         this.setGrid(newGrid);
+        // Handle text end (enter)
       } else if (event.key === "Enter") {
-        this.isTyping = false;
-        this.startingPosition = null;
-        this.originalGrid = null;
-        const grid = this.getGrid();
-        const newGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
-        this.restoreCell(newGrid, this.pointerPosition[0], this.pointerPosition[1]); // Pointer
-        this.setGrid(newGrid);
+        this.stopTyping();
       }
     }
   };
 
-  private restoreCell(grid: GridCell[][], x: number, y: number) {
-    if (this.originalGrid && this.originalGrid[y][x]) {
-      grid[y][x] = {
-        char: this.originalGrid[y][x].char,
-        charColor: this.originalGrid[y][x].charColor,
-        backgroundColor: this.originalGrid[y][x].backgroundColor,
-        isBlinking: this.originalGrid[y][x].isBlinking,
-      };
-    }
+  private stopTyping() {
+    this.isTyping = false;
+    this.startingPosition = null;
+    const grid = this.getGrid();
+    const newGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
+    this.restoreCell(newGrid, this.pointerPosition[0], this.pointerPosition[1]); // Pointer
+    this.setGrid(newGrid);
+    this.saveHistory(newGrid);
   }
 
-  handleSelect = () => {
+  override handleSelect = (): void => {
     this.originalGrid = this.getGrid();
     this.options = this.getToolOptions()[this.type] as TextToolOption;
   };
@@ -148,6 +139,17 @@ export default class Text extends Tool {
     this.setToolOptions({ ...this.getToolOptions(), [this.type]: newOptions });
     this.options = newOptions;
   };
+
+  private restoreCell(grid: GridCell[][], x: number, y: number) {
+    if (this.originalGrid && this.originalGrid[y][x]) {
+      grid[y][x] = {
+        char: this.originalGrid[y][x].char,
+        charColor: this.originalGrid[y][x].charColor,
+        backgroundColor: this.originalGrid[y][x].backgroundColor,
+        isBlinking: this.originalGrid[y][x].isBlinking,
+      };
+    }
+  }
 
   public getToolOptionsNode(): React.ReactNode {
     const { charColor, backgroundColor } = this.options;
