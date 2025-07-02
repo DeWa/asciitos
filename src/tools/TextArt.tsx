@@ -117,6 +117,10 @@ export default class TextArt extends Tool {
     this.options = this.getToolOptions()[this.type] as TextArtToolOption;
   };
 
+  override handleDeselect = (): void => {
+    this.setGrid([...this.originalGrid]);
+  };
+
   override handleUndo = (grid: GridCell[][]): void => {
     this.originalGrid = grid;
     this.temporaryGrid = grid;
