@@ -155,7 +155,7 @@ export default class Text extends Tool {
     const { charColor, backgroundColor } = this.options;
 
     return (
-      <>
+      <HStack>
         {/* Set character color */}
         <ColorPicker.Root
           defaultValue={charColor}
@@ -202,7 +202,7 @@ export default class Text extends Tool {
             </ColorPicker.Positioner>
           </Portal>
         </ColorPicker.Root>
-      </>
+      </HStack>
     );
   }
 }

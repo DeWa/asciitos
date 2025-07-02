@@ -1,4 +1,8 @@
 import {
+  Button,
+  CloseButton,
+  Dialog,
+  Field,
   ColorPicker,
   createListCollection,
   HStack,
@@ -10,8 +14,8 @@ import {
   useSelectContext,
   type Color,
 } from "@chakra-ui/react";
-import styled from "@emotion/styled";
 import { MdOutlineRectangle, MdRectangle } from "react-icons/md";
+import { RiCharacterRecognitionLine } from "react-icons/ri";
 
 import { Tool } from ".";
 import { ToolType, type GridCell } from "../types";
@@ -28,31 +32,6 @@ export enum RectangleFillType {
   Outline = "Outline",
   Filled = "Filled",
 }
-
-const PresetContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-`;
-
-const PresetButton = styled.button<{ $isSelected: boolean }>`
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${(props) => (props.$isSelected ? "#4a4a4a" : "#333")};
-  border: 1px solid #444;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 16px;
-
-  &:hover {
-    background-color: #4a4a4a;
-  }
-`;
 
 const SelectTrigger = () => {
   const select = useSelectContext();
@@ -199,26 +178,66 @@ export default class Rectangle extends Tool {
     });
 
     return (
-      <>
-        <Input
-          type="text"
-          value={char}
-          onChange={(e) => this.handleCustomCharChange(e.target.value)}
-          placeholder="Type a character..."
-          maxLength={1}
-        />
-        <PresetContainer>
-          {PRESET_CHARS.map((char) => (
-            <PresetButton
-              key={char}
-              $isSelected={char === this.options.char}
-              onClick={() => this.handlePresetCharChange(char)}
-            >
-              {char}
-            </PresetButton>
-          ))}
-        </PresetContainer>
-        {/* Character Color Picker */}
+      <HStack>
+        <Field.Root>
+          <Field.Label>Character</Field.Label>
+          <Input
+            type="text"
+            value={char}
+            onChange={(e) => this.handleCustomCharChange(e.target.value)}
+            placeholder="?"
+            maxLength={1}
+            width="30px"
+            textAlign="center"
+          />
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Character</Field.Label>
+          <Dialog.Root size="md">
+            <Dialog.Trigger asChild>
+              <Button color="fg.button">
+                <RiCharacterRecognitionLine />
+              </Button>
+            </Dialog.Trigger>
+            <Portal>
+              <Dialog.Backdrop />
+              <Dialog.Positioner>
+                <Dialog.Content p="8">
+                  <Dialog.Header>
+                    <Dialog.Title>Select a character</Dialog.Title>
+                  </Dialog.Header>
+                  <Dialog.Body pb="8">
+                    <p>Select a character from the table below:</p>
+                    <HStack gap="1" flexWrap="wrap" mt="3">
+                      {PRESET_CHARS.map((char) => (
+                        <Dialog.ActionTrigger asChild key={char}>
+                          <Button
+                            size="sm"
+                            width="30px"
+                            height="30px"
+                            fontSize="16px"
+                            fontFamily="monospace"
+                            bg={char === this.options.char ? "gray.600" : "gray.700"}
+                            color="white"
+                            border="1px solid"
+                            borderColor="gray.500"
+                            _hover={{ bg: "gray.600" }}
+                            onClick={() => this.handlePresetCharChange(char)}
+                          >
+                            {char}
+                          </Button>
+                        </Dialog.ActionTrigger>
+                      ))}
+                    </HStack>
+                  </Dialog.Body>
+                  <Dialog.CloseTrigger asChild>
+                    <CloseButton color="fg.button" size="xs" />
+                  </Dialog.CloseTrigger>
+                </Dialog.Content>
+              </Dialog.Positioner>
+            </Portal>
+          </Dialog.Root>
+        </Field.Root>
         <ColorPicker.Root
           defaultValue={charColor}
           size="md"
@@ -241,7 +260,6 @@ export default class Rectangle extends Tool {
             </ColorPicker.Positioner>
           </Portal>
         </ColorPicker.Root>
-        {/* Background Color Picker */}
         <ColorPicker.Root
           defaultValue={backgroundColor}
           size="md"
@@ -293,7 +311,7 @@ export default class Rectangle extends Tool {
             </Select.Positioner>
           </Portal>
         </Select.Root>
-      </>
+      </HStack>
     );
   }
 }
