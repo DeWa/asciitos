@@ -178,7 +178,7 @@ export default class TextArt extends Tool {
     const { charColor, backgroundColor } = this.options;
 
     return (
-      <>
+      <HStack>
         {/* Set text */}
         <Input
           placeholder="Text"
@@ -310,7 +310,7 @@ export default class TextArt extends Tool {
             </ColorPicker.Positioner>
           </Portal>
         </ColorPicker.Root>
-      </>
+      </HStack>
     );
   }
 }
