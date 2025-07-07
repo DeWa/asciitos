@@ -12,7 +12,7 @@ import { LuRectangleHorizontal } from "react-icons/lu";
 import { PiTextAa, PiGridFour, PiSquareLight } from "react-icons/pi";
 import { CiText } from "react-icons/ci";
 import { FaRedo, FaUndo } from "react-icons/fa";
-import { FaBars } from "react-icons/fa6";
+import { FaBars, FaBookOpen } from "react-icons/fa6";
 
 const Container = styled.div`
   display: flex;
@@ -53,6 +53,7 @@ interface ToolBarProps {
   editorOptions: EditorOptions;
   setEditorOptions: (editorOptions: EditorOptions) => void;
   setOpenPageSelector: (open: boolean) => void;
+  setOpenMenu: (open: boolean) => void;
   setGrid: (grid: GridCell[][]) => void;
 }
 
@@ -65,6 +66,7 @@ const ToolBar: React.FC<ToolBarProps> = ({
   editorOptions,
   setEditorOptions,
   setOpenPageSelector,
+  setOpenMenu,
   setGrid,
 }) => {
   const onToolSelect = (tool: ToolType) => {
@@ -77,8 +79,12 @@ const ToolBar: React.FC<ToolBarProps> = ({
     setEditorOptions({ ...editorOptions, showGrid: checked });
   };
 
-  const onMenuClick = () => {
+  const onPagesMenuClick = () => {
     setOpenPageSelector(true);
+  };
+
+  const onMenuClick = () => {
+    setOpenMenu(true);
   };
 
   const onUndoClick = () => {
@@ -215,6 +221,9 @@ const ToolBar: React.FC<ToolBarProps> = ({
             {/* Redo */}
             <Button size="md" title="Redo" variant="ghost" onClick={onRedoClick}>
               <FaRedo />
+            </Button>
+            <Button size="md" title="Pages" variant="ghost" onClick={onPagesMenuClick}>
+              <FaBookOpen />
             </Button>
             <Button size="md" title="Menu" variant="ghost" onClick={onMenuClick}>
               <FaBars />

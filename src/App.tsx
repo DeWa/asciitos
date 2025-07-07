@@ -7,6 +7,7 @@ import { ToolType, type EditorOptions, type GridCell, type ToolOption } from "./
 import { parseColor } from "@chakra-ui/react";
 import { Toaster } from "@/components/ui/toaster";
 import PageSelector from "./components/PageSelector";
+import Menu from "./components/Menu";
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -63,6 +64,7 @@ function App() {
     showGrid: true,
   });
   const [openPageSelector, setOpenPageSelector] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
 
   const setGrid = (grid: GridCell[][]) => {
     setPages((prevPages) =>
@@ -96,6 +98,7 @@ function App() {
           editorOptions={editorOptions}
           setEditorOptions={setEditorOptions}
           setOpenPageSelector={setOpenPageSelector}
+          setOpenMenu={setOpenMenu}
           setGrid={setGrid}
         />
         <AsciiGrid
@@ -112,6 +115,13 @@ function App() {
         setCurrentPageId={setCurrentPageId}
         setPages={setPages}
         currentPageId={currentPageId}
+      />
+      <Menu
+        open={openMenu}
+        setOpen={setOpenMenu}
+        pages={pages}
+        setPages={setPages}
+        setCurrentPageId={setCurrentPageId}
       />
       <Toaster />
     </AppContainer>
