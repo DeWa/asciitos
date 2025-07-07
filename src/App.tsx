@@ -5,6 +5,7 @@ import ToolBar from "./components/ToolBar";
 import { TOOLS } from "./consts";
 import { ToolType, type EditorOptions, type GridCell, type ToolOption } from "./types";
 import { parseColor } from "@chakra-ui/react";
+import { Toaster } from "@/components/ui/toaster";
 import PageSelector from "./components/PageSelector";
 
 const AppContainer = styled.div`
@@ -30,6 +31,15 @@ const EditorContainer = styled.div`
 `;
 
 const tools = TOOLS;
+const initialGrid = Array(25)
+  .fill(null)
+  .map(() =>
+    Array(80).fill({
+      char: " ",
+      charColor: parseColor("#ffffff"),
+      backgroundColor: parseColor("#000000"),
+    })
+  );
 
 function App() {
   const [selectedTool, setSelectedTool] = useState<ToolType>(ToolType.Brush);
@@ -41,41 +51,37 @@ function App() {
       ])
     ) as Record<ToolType, ToolOption>
   );
-  const [grid, setGrid] = useState<GridCell[][]>(
-    Array(25)
-      .fill(null)
-      .map(() =>
-        Array(80).fill({
-          char: " ",
-          charColor: parseColor("#ffffff"),
-          backgroundColor: parseColor("#000000"),
-        })
-      )
-  );
-  const [pages, setPages] = useState<Record<string, GridCell[][]>>({
-    Main: grid,
-  });
+  const [pages, setPages] = useState<{ id: number; name: string; grid: GridCell[][] }[]>([
+    { id: 0, name: "Main", grid: initialGrid },
+  ]);
+  const [currentPageId, setCurrentPageId] = useState(0);
   const [actionHistory, setActionHistory] = useState<{
     history: GridCell[][][];
     index: number;
-  }>({ history: [grid], index: 0 });
+  }>({ history: [initialGrid], index: 0 });
   const [editorOptions, setEditorOptions] = useState<EditorOptions>({
     showGrid: true,
   });
   const [openPageSelector, setOpenPageSelector] = useState(false);
 
+  const setGrid = (grid: GridCell[][]) => {
+    setPages((prevPages) =>
+      prevPages.map((page) => (page.id === currentPageId ? { ...page, grid } : page))
+    );
+  };
+
   useEffect(() => {
     for (const tool of Object.values(tools)) {
       tool.updateProps({
         setGrid,
-        getGrid: () => grid.map((row) => row.map((cell) => ({ ...cell }))),
+        getGrid: () => pages[currentPageId].grid.map((row) => row.map((cell) => ({ ...cell }))),
         setToolOptions,
         getToolOptions: () => toolOptions,
         setActionHistory,
         getActionHistory: () => actionHistory,
       });
     }
-  }, [grid, toolOptions, selectedTool, pages, actionHistory]);
+  }, [toolOptions, selectedTool, pages, actionHistory, currentPageId]);
 
   return (
     <AppContainer>
@@ -85,8 +91,6 @@ function App() {
           tools={tools}
           selectedTool={selectedTool}
           setSelectedTool={setSelectedTool}
-          pages={pages}
-          setPages={setPages}
           actionHistory={actionHistory}
           setActionHistory={setActionHistory}
           editorOptions={editorOptions}
@@ -95,13 +99,21 @@ function App() {
           setGrid={setGrid}
         />
         <AsciiGrid
-          grid={grid}
+          grid={pages[currentPageId].grid}
           tools={tools}
           selectedTool={selectedTool}
           editorOptions={editorOptions}
         />
       </EditorContainer>
-      <PageSelector open={openPageSelector} setOpen={setOpenPageSelector} />
+      <PageSelector
+        open={openPageSelector}
+        setOpen={setOpenPageSelector}
+        pages={pages}
+        setCurrentPageId={setCurrentPageId}
+        setPages={setPages}
+        currentPageId={currentPageId}
+      />
+      <Toaster />
     </AppContainer>
   );
 }

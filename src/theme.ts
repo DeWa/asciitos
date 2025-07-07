@@ -200,6 +200,9 @@ const config = defineConfig({
           buttonOutlineHover: { value: "{colors.white}" },
           buttonGhost: { value: "{colors.gray.100}" },
           buttonGhostHover: { value: "{colors.white}" },
+          buttonWarning: { value: "{colors.red.600}" },
+          buttonWarningHover: { value: "{colors.red.500}" },
+          buttonWarningActive: { value: "{colors.red.700}" },
           // Toolbar backgrounds
           toolbar: { value: "{colors.gray.800}" },
           toolbarHover: { value: "{colors.gray.750}" },

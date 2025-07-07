@@ -48,8 +48,6 @@ interface ToolBarProps {
   tools: Record<ToolType, Tool>;
   selectedTool: ToolType;
   setSelectedTool: (tool: ToolType) => void;
-  pages: Record<string, GridCell[][]>;
-  setPages: (pages: Record<string, GridCell[][]>) => void;
   actionHistory: { history: GridCell[][][]; index: number };
   setActionHistory: (actionHistory: { history: GridCell[][][]; index: number }) => void;
   editorOptions: EditorOptions;
@@ -62,8 +60,6 @@ const ToolBar: React.FC<ToolBarProps> = ({
   tools,
   selectedTool,
   setSelectedTool,
-  // pages,
-  // setPages,
   actionHistory,
   setActionHistory,
   editorOptions,
