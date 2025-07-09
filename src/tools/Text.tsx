@@ -33,8 +33,8 @@ export default class Text extends Tool {
 
     grid[y][x] = {
       char: "│",
-      charColor: parseColor("#ffffff"),
-      backgroundColor: this.options.backgroundColor,
+      charColor: "#ffffff",
+      backgroundColor: this.options.backgroundColor.toString("css"),
       isBlinking: true,
     };
     return grid;
@@ -43,8 +43,8 @@ export default class Text extends Tool {
   private setCharacter(grid: GridCell[][], x: number, y: number, char: string): GridCell[][] {
     grid[y][x] = {
       char,
-      charColor: this.options.charColor,
-      backgroundColor: this.options.backgroundColor,
+      charColor: this.options.charColor.toString("css"),
+      backgroundColor: this.options.backgroundColor.toString("css"),
       isBlinking: false,
     };
     return grid;

@@ -166,8 +166,8 @@ const PageSelector: React.FC<PageSelectorProps> = ({
         grid: Array(25).fill(
           Array(80).fill({
             char: " ",
-            charColor: parseColor("#ffffff"),
-            backgroundColor: parseColor("#000000"),
+            charColor: "#ffffff",
+            backgroundColor: "#000000",
           })
         ),
       },

@@ -82,8 +82,8 @@ const AsciiGrid: React.FC<AsciiGridProps> = ({ grid, tools, selectedTool, editor
             onMouseOver={() => handleMouseOver(colIndex, rowIndex)}
             onMouseUp={() => handleMouseUp(colIndex, rowIndex)}
             style={{
-              backgroundColor: cell.backgroundColor.toString("css"),
-              color: cell.charColor.toString("css"),
+              backgroundColor: cell.backgroundColor,
+              color: cell.charColor,
             }}
           >
             {cell.char}

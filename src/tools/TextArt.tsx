@@ -87,8 +87,8 @@ export default class TextArt extends Tool {
         ) {
           newGrid[targetY][targetX] = {
             char,
-            charColor: this.options.charColor,
-            backgroundColor: this.options.backgroundColor,
+            charColor: this.options.charColor.toString("css"),
+            backgroundColor: this.options.backgroundColor.toString("css"),
           };
         }
       });

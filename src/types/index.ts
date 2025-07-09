@@ -27,8 +27,8 @@ export type ToolOption =
 
 export interface GridCell {
   char: string;
-  charColor: Color;
-  backgroundColor: Color;
+  charColor: string;
+  backgroundColor: string;
   isBlinking?: boolean;
 }
 

@@ -34,13 +34,13 @@ const EditorContainer = styled.div`
 `;
 
 const tools = TOOLS;
-const initialGrid = Array(25)
+const initialGrid: GridCell[][] = Array(25)
   .fill(null)
   .map(() =>
     Array(80).fill({
       char: " ",
-      charColor: parseColor("#ffffff"),
-      backgroundColor: parseColor("#000000"),
+      charColor: "#ffffff",
+      backgroundColor: "#000000",
     })
   );
 

@@ -92,8 +92,8 @@ export default class Line extends Tool {
       while (true) {
         newGrid[ny][nx] = {
           char: this.options.char,
-          charColor: this.options.charColor,
-          backgroundColor: this.options.backgroundColor,
+          charColor: this.options.charColor.toString("css"),
+          backgroundColor: this.options.backgroundColor.toString("css"),
         };
         if (nx === x1 && ny === y1) break;
         const e2 = 2 * err;

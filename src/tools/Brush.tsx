@@ -18,16 +18,16 @@ import { Tool } from ".";
 
 export type BrushToolOption = {
   char: string;
-  charColor: Color;
-  backgroundColor: Color;
+  charColor: string;
+  backgroundColor: string;
 };
 
 export default class Brush extends Tool {
   type = ToolType.Brush;
   defaultToolOption: BrushToolOption = {
     char: "#",
-    charColor: parseColor("#ffffff"),
-    backgroundColor: parseColor("#000000"),
+    charColor: "#ffffff",
+    backgroundColor: "#000000",
   };
   options: BrushToolOption = this.defaultToolOption;
   isDrawing = false;
@@ -77,13 +77,13 @@ export default class Brush extends Tool {
     this.options = newOptions;
   }
 
-  handleCharColorChange(color: Color): void {
+  handleCharColorChange(color: string): void {
     const newOptions = { ...this.options, charColor: color };
     this.setToolOptions({ ...this.getToolOptions(), [this.type]: newOptions });
     this.options = newOptions;
   }
 
-  handleBgColorChange(color: Color): void {
+  handleBgColorChange(color: string): void {
     const newOptions = { ...this.options, backgroundColor: color };
     this.setToolOptions({ ...this.getToolOptions(), [this.type]: newOptions });
     this.options = newOptions;
@@ -168,9 +168,9 @@ export default class Brush extends Tool {
           </Dialog.Root>
         </Field.Root>
         <ColorPicker.Root
-          defaultValue={charColor}
+          defaultValue={parseColor(charColor)}
           size="md"
-          onValueChangeEnd={(value) => this.handleCharColorChange(value.value)}
+          onValueChangeEnd={(value) => this.handleCharColorChange(value.value.toString("css"))}
         >
           <ColorPicker.HiddenInput />
           <ColorPicker.Label>Character Color</ColorPicker.Label>
@@ -190,9 +190,9 @@ export default class Brush extends Tool {
           </Portal>
         </ColorPicker.Root>
         <ColorPicker.Root
-          defaultValue={backgroundColor}
+          defaultValue={parseColor(backgroundColor)}
           size="md"
-          onValueChangeEnd={(value) => this.handleBgColorChange(value.value)}
+          onValueChangeEnd={(value) => this.handleBgColorChange(value.value.toString("css"))}
         >
           <ColorPicker.HiddenInput />
           <ColorPicker.Label>Background Color</ColorPicker.Label>

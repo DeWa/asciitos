@@ -40,7 +40,11 @@ export default class Fill extends Tool {
 
     const { char, charColor, backgroundColor } = this.options;
     // If the target cell already has the same properties, no need to fill
-    if (targetChar === char && targetCharColor === charColor && targetBgColor === backgroundColor) {
+    if (
+      targetChar === char &&
+      targetCharColor === charColor.toString("css") &&
+      targetBgColor === backgroundColor.toString("css")
+    ) {
       return;
     }
 
@@ -58,8 +62,8 @@ export default class Fill extends Tool {
     x: number,
     y: number,
     targetChar: string,
-    targetCharColor: Color,
-    targetBgColor: Color
+    targetCharColor: string,
+    targetBgColor: string
   ): GridCell[][] {
     const newGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
 
@@ -68,8 +72,8 @@ export default class Fill extends Tool {
 
     const isSame = (cell: GridCell) =>
       cell.char === targetChar &&
-      cell.charColor.toString("hex") === targetCharColor.toString("hex") &&
-      cell.backgroundColor.toString("hex") === targetBgColor.toString("hex");
+      cell.charColor === targetCharColor &&
+      cell.backgroundColor === targetBgColor;
 
     while (queue.length > 0) {
       const [x, y] = queue.shift()!;
@@ -87,8 +91,8 @@ export default class Fill extends Tool {
       // Fill cell
       newGrid[y][x] = {
         char: this.options.char,
-        charColor: this.options.charColor,
-        backgroundColor: this.options.backgroundColor,
+        charColor: this.options.charColor.toString("css"),
+        backgroundColor: this.options.backgroundColor.toString("css"),
       };
 
       // Add 4-directional neighbors
