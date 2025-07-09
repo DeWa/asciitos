@@ -54,9 +54,10 @@ function App() {
       ])
     ) as Record<ToolType, ToolOption>
   );
-  const [pages, setPages] = useState<{ id: number; name: string; grid: GridCell[][] }[]>([
-    { id: 0, name: "Main", grid: initialGrid },
-  ]);
+  const [pages, setPages] = useLocalStorage<{ id: number; name: string; grid: GridCell[][] }[]>(
+    "pages",
+    [{ id: 0, name: "Main", grid: initialGrid }]
+  );
   const [currentPageId, setCurrentPageId] = useState(0);
   const [actionHistory, setActionHistory] = useState<{
     history: GridCell[][][];
@@ -68,11 +69,14 @@ function App() {
   const [openPageSelector, setOpenPageSelector] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
 
-  const setGrid = (grid: GridCell[][]) => {
-    setPages((prevPages) =>
-      prevPages.map((page) => (page.id === currentPageId ? { ...page, grid } : page))
-    );
-  };
+  const setGrid = useCallback(
+    (grid: GridCell[][]) => {
+      setPages((prevPages) =>
+        prevPages.map((page) => (page.id === currentPageId ? { ...page, grid } : page))
+      );
+    },
+    [currentPageId]
+  );
 
   useEffect(() => {
     for (const tool of Object.values(tools)) {
@@ -85,7 +89,7 @@ function App() {
         getActionHistory: () => actionHistory,
       });
     }
-  }, [toolOptions, selectedTool, pages, actionHistory, currentPageId]);
+  }, [toolOptions, selectedTool, pages, actionHistory, currentPageId, setGrid]);
 
   return (
     <AppContainer>
