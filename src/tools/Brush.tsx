@@ -47,7 +47,7 @@ export default class Brush extends Tool {
     }
   };
 
-  handleMouseUp = (_x: number, _y: number): void => {
+  handleMouseUp = (): void => {
     this.isDrawing = false;
     this.endDrawing();
   };
