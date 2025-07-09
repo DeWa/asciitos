@@ -1,3 +1,4 @@
+import { RiCharacterRecognitionLine } from "react-icons/ri";
 import {
   Button,
   CloseButton,
@@ -6,14 +7,14 @@ import {
   Field,
   HStack,
   Input,
-  parseColor,
   Portal,
-  type Color,
 } from "@chakra-ui/react";
-import { RiCharacterRecognitionLine } from "react-icons/ri";
-import { Tool } from ".";
-import { ToolType, type GridCell } from "../types";
+import { parseColor } from "@chakra-ui/react";
+
 import { PRESET_CHARS } from "../consts";
+import { type GridCell, ToolType } from "../types";
+
+import { Tool } from ".";
 
 export type BrushToolOption = {
   char: string;

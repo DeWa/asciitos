@@ -1,10 +1,13 @@
+import { MdOutlineRectangle, MdRectangle } from "react-icons/md";
+import { RiCharacterRecognitionLine } from "react-icons/ri";
 import {
   Button,
   CloseButton,
-  Dialog,
-  Field,
+  type Color,
   ColorPicker,
   createListCollection,
+  Dialog,
+  Field,
   HStack,
   IconButton,
   Input,
@@ -12,14 +15,12 @@ import {
   Portal,
   Select,
   useSelectContext,
-  type Color,
 } from "@chakra-ui/react";
-import { MdOutlineRectangle, MdRectangle } from "react-icons/md";
-import { RiCharacterRecognitionLine } from "react-icons/ri";
+
+import { PRESET_CHARS } from "../consts";
+import { type GridCell, ToolType } from "../types";
 
 import { Tool } from ".";
-import { ToolType, type GridCell } from "../types";
-import { PRESET_CHARS } from "../consts";
 
 export type RectangleToolOption = {
   char: string;

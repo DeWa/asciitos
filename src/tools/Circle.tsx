@@ -1,19 +1,21 @@
+import { RiCharacterRecognitionLine } from "react-icons/ri";
 import {
   Button,
+  CloseButton,
+  type Color,
   ColorPicker,
   Dialog,
   Field,
   HStack,
   Input,
-  CloseButton,
   parseColor,
   Portal,
-  type Color,
 } from "@chakra-ui/react";
-import { Tool } from ".";
-import { ToolType, type GridCell } from "../types";
+
 import { PRESET_CHARS } from "../consts";
-import { RiCharacterRecognitionLine } from "react-icons/ri";
+import { type GridCell, ToolType } from "../types";
+
+import { Tool } from ".";
 
 export type CircleToolOption = {
   char: string;
@@ -109,8 +111,8 @@ export default class Circle extends Tool {
     if (x >= 0 && x < grid[0].length && y >= 0 && y < grid.length) {
       grid[y][x] = {
         char: this.options.char,
-        charColor: this.options.charColor,
-        backgroundColor: this.options.backgroundColor,
+        charColor: this.options.charColor.toString("css"),
+        backgroundColor: this.options.backgroundColor.toString("css"),
       };
     }
   }

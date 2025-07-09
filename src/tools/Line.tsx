@@ -1,19 +1,21 @@
+import { RiCharacterRecognitionLine } from "react-icons/ri";
 import {
+  Button,
+  CloseButton,
+  type Color,
   ColorPicker,
+  Dialog,
+  Field,
   HStack,
   Input,
   parseColor,
   Portal,
-  type Color,
-  Dialog,
-  Field,
-  Button,
-  CloseButton,
 } from "@chakra-ui/react";
-import { Tool } from ".";
-import { ToolType, type GridCell } from "../types";
+
 import { PRESET_CHARS } from "../consts";
-import { RiCharacterRecognitionLine } from "react-icons/ri";
+import { type GridCell, ToolType } from "../types";
+
+import { Tool } from ".";
 
 export type LineToolOption = {
   char: string;

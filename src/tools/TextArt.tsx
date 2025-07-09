@@ -1,4 +1,5 @@
 import {
+  type Color,
   ColorPicker,
   createListCollection,
   HStack,
@@ -7,11 +8,12 @@ import {
   Portal,
   Select,
   Slider,
-  type Color,
 } from "@chakra-ui/react";
-import { Tool } from ".";
-import { ToolType, type GridCell } from "../types";
 import figlet from "figlet";
+
+import { type GridCell, ToolType } from "../types";
+
+import { Tool } from ".";
 
 export type TextArtToolOption = {
   text: string;

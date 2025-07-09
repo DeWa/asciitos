@@ -1,6 +1,8 @@
-import { ColorPicker, HStack, parseColor, Portal, type Color } from "@chakra-ui/react";
+import { type Color, ColorPicker, HStack, parseColor, Portal } from "@chakra-ui/react";
+
+import { type GridCell, ToolType } from "../types";
+
 import { Tool } from ".";
-import { ToolType, type GridCell } from "../types";
 
 export type TextToolOption = {
   text: string;

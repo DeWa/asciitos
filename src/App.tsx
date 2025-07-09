@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "@emotion/styled";
+
+import { Toaster } from "@/components/ui/toaster";
+
 import AsciiGrid from "./components/AsciiGrid";
+import Menu from "./components/Menu";
+import PageSelector from "./components/PageSelector";
 import ToolBar from "./components/ToolBar";
 import { TOOLS } from "./consts";
-import { ToolType, type EditorOptions, type GridCell, type ToolOption } from "./types";
-import { parseColor } from "@chakra-ui/react";
-import { Toaster } from "@/components/ui/toaster";
-import PageSelector from "./components/PageSelector";
-import Menu from "./components/Menu";
+import { type EditorOptions, type GridCell, type ToolOption, ToolType } from "./types";
+import { useLocalStorage } from "./utils";
 
 const AppContainer = styled.div`
   min-height: 100vh;

@@ -1,11 +1,10 @@
-import type { Color } from "@chakra-ui/react";
 import type { BrushToolOption } from "../tools/Brush";
 import type { CircleToolOption } from "../tools/Circle";
-import type { LineToolOption } from "../tools/Line";
 import type { FillToolOption } from "../tools/Fill";
+import type { LineToolOption } from "../tools/Line";
 import type { RectangleToolOption } from "../tools/Rectangle";
-import type { TextArtToolOption } from "../tools/TextArt";
 import type { TextToolOption } from "../tools/Text";
+import type { TextArtToolOption } from "../tools/TextArt";
 
 export enum ToolType {
   Brush = "brush",

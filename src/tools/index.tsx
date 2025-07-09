@@ -1,4 +1,4 @@
-import { type GridCell, ToolType, type ToolOption } from "../types";
+import { type GridCell, type ToolOption, ToolType } from "../types";
 
 export abstract class Tool {
   abstract type: ToolType;

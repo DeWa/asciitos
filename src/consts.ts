@@ -1,11 +1,11 @@
-import { ToolType } from "./types";
-import Fill from "./tools/Fill";
-import Rectangle from "./tools/Rectangle";
-import TextArt from "./tools/TextArt";
 import Brush from "./tools/Brush";
-import Line from "./tools/Line";
 import Circle from "./tools/Circle";
+import Fill from "./tools/Fill";
+import Line from "./tools/Line";
+import Rectangle from "./tools/Rectangle";
 import Text from "./tools/Text";
+import TextArt from "./tools/TextArt";
+import { ToolType } from "./types";
 
 export const TOOLS = {
   [ToolType.Brush]: new Brush(),

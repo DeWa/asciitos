@@ -1,6 +1,8 @@
-import { Drawer, Portal, Button, Flex, Input, Box } from "@chakra-ui/react";
 import React, { useRef } from "react";
+import { Box, Button, Drawer, Flex, Input, Portal, Separator } from "@chakra-ui/react";
+
 import { toaster } from "@/components/ui/toaster";
+
 import type { GridCell } from "../types";
 
 interface MenuProps {

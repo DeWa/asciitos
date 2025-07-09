@@ -1,19 +1,20 @@
-import {
-  Button,
-  Drawer,
-  Input,
-  parseColor,
-  Portal,
-  Flex,
-  GridItem,
-  Box,
-  Grid,
-  Dialog,
-  CloseButton,
-} from "@chakra-ui/react";
-import { toaster } from "@/components/ui/toaster";
 import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import {
+  Box,
+  Button,
+  CloseButton,
+  Dialog,
+  Drawer,
+  Flex,
+  Grid,
+  GridItem,
+  Input,
+  Portal,
+} from "@chakra-ui/react";
+
+import { toaster } from "@/components/ui/toaster";
+
 import type { GridCell } from "../types";
 
 interface PageSelectorProps {

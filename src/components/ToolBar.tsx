@@ -1,18 +1,16 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { Button, HStack, Icon, SegmentGroup, Switch } from "@chakra-ui/react";
-import { ToolType, type EditorOptions, type GridCell } from "../types";
-import type { Tool } from "../tools";
-
-// Icons
-import { FaBroom, FaFill } from "react-icons/fa6";
-import { TbLine } from "react-icons/tb";
-import { FaRegCircle } from "react-icons/fa";
-import { LuRectangleHorizontal } from "react-icons/lu";
-import { PiTextAa, PiGridFour, PiSquareLight } from "react-icons/pi";
 import { CiText } from "react-icons/ci";
+import { FaRegCircle } from "react-icons/fa";
 import { FaRedo, FaUndo } from "react-icons/fa";
-import { FaBars, FaBookOpen } from "react-icons/fa6";
+import { FaBars, FaBookOpen, FaBroom, FaFill } from "react-icons/fa6";
+import { LuRectangleHorizontal } from "react-icons/lu";
+import { PiGridFour, PiSquareLight, PiTextAa } from "react-icons/pi";
+import { TbLine } from "react-icons/tb";
+import { Button, HStack, Icon, SegmentGroup, Switch } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+
+import type { Tool } from "../tools";
+import { type EditorOptions, type GridCell, ToolType } from "../types";
 
 const Container = styled.div`
   display: flex;

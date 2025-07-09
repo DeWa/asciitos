@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
-import type { EditorOptions, GridCell, ToolType } from "../types";
+
 import type { Tool } from "../tools";
+import type { EditorOptions, GridCell, ToolType } from "../types";
 
 const GridContainer = styled.div`
   display: grid;
