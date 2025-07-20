@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Joonas Reinikka <joonas.reinikka@gmail.com>",
+  "license": "CC BY-NC 4.0",
+  "description": "A CLI design tool",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
